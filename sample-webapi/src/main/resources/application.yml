@@ -1,0 +1,5 @@
+logging:
+  level:
+    org.springframework.boot.web: DEBUG
+    org.springframework.web: DEBUG
+    sample: DEBUG
