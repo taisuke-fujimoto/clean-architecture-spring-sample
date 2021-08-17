@@ -3,7 +3,6 @@ package sample.interfaceAdapters.gateways
 import org.apache.commons.logging.Log
 import org.apache.commons.logging.LogFactory
 import org.jetbrains.exposed.exceptions.ExposedSQLException
-import org.jetbrains.exposed.sql.transactions.transaction
 import org.springframework.stereotype.Repository
 import sample.entities.models.NewUserEntity
 import sample.entities.models.UserEntity
@@ -17,11 +16,10 @@ import sample.useCases.exceptions.DuplicateKeyException
 class UserRepositoryImpl(
     private val userAccessor: UserAccessor
 ) : UserRepository {
-    private val log: Log = LogFactory.getLog(javaClass)
+    private val logger: Log = LogFactory.getLog(javaClass)
 
     override fun getUser(userId: UserEntity.UserId): UserEntity {
-        // トランザクションは useCase 層の方がいい
-        val data = transaction { userAccessor.findBy(userId) } ?: throw DataNotFoundException()
+        val data = userAccessor.findBy(userId) ?: throw DataNotFoundException()
         return UserEntity(
             userId = UserEntity.UserId(data[Users.id]),
             account = data[Users.account]
@@ -30,9 +28,9 @@ class UserRepositoryImpl(
 
     override fun createUser(data: NewUserEntity): UserEntity {
         val result = try {
-            transaction { userAccessor.insert(data) }
+            userAccessor.insert(data)
         } catch (ex: ExposedSQLException) {
-            log.error("[createUser] sqlState: ${ex.sqlState}")
+            logger.error("[createUser] sqlState: ${ex.sqlState}")
             if (ex.sqlState == "23505") {
                 throw DuplicateKeyException(ex.cause)
             } else {

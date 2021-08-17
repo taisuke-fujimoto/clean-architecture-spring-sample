@@ -4,6 +4,7 @@ import com.github.michaelbull.result.Err
 import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import sample.entities.models.NewUserEntity
 import sample.entities.models.UserEntity
 import sample.entities.repositories.UserRepository
@@ -12,6 +13,7 @@ import sample.useCases.exceptions.DataNotFoundException
 import sample.useCases.exceptions.DuplicateKeyException
 import sample.useCases.inputPort.UserUseCase
 
+@Transactional
 @Service
 class UserInteractor(
     private val userRepository: UserRepository
