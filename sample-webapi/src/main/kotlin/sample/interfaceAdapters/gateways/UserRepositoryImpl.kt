@@ -18,15 +18,16 @@ class UserRepositoryImpl(
 ) : UserRepository {
     private val logger: Log = LogFactory.getLog(javaClass)
 
-    override fun getUser(userId: UserEntity.UserId): UserEntity {
+    override fun get(userId: UserEntity.UserId): UserEntity {
         val data = userAccessor.findBy(userId) ?: throw DataNotFoundException()
         return UserEntity(
             userId = UserEntity.UserId(data[Users.id]),
-            account = data[Users.account]
+            account = data[Users.account],
+            name = data[Users.name]
         )
     }
 
-    override fun createUser(data: NewUserEntity): UserEntity {
+    override fun create(data: NewUserEntity): UserEntity {
         val result = try {
             userAccessor.insert(data)
         } catch (ex: ExposedSQLException) {
@@ -40,6 +41,6 @@ class UserRepositoryImpl(
         check(result.insertedCount == 1) { "INSERT 件数がおかしい (${result.insertedCount} 件)" }
         val newId = UserEntity.UserId(result[Users.id])
 
-        return getUser(newId)
+        return get(newId)
     }
 }

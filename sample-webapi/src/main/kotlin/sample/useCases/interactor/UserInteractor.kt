@@ -7,11 +7,11 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import sample.entities.exceptions.DataNotFoundException
 import sample.entities.exceptions.DuplicateKeyException
-import sample.entities.models.NewUserEntity
 import sample.entities.models.UserEntity
 import sample.entities.repositories.UserRepository
-import sample.useCases.errorCodes.UserErrorCode
 import sample.useCases.inputPort.UserUseCase
+import sample.useCases.models.CreateUserRequest
+import sample.useCases.models.UserErrorCode
 
 @Transactional
 @Service
@@ -20,15 +20,17 @@ class UserInteractor(
 ) : UserUseCase {
     override fun getUser(userId: Long): Result<UserEntity, UserErrorCode> {
         return try {
-            Ok(userRepository.getUser(UserEntity.UserId(userId)))
+            Ok(userRepository.get(UserEntity.UserId(userId)))
         } catch (ex: DataNotFoundException) {
             Err(UserErrorCode.NOT_FOUND)
         }
     }
 
-    override fun createUser(data: NewUserEntity): Result<UserEntity, UserErrorCode> {
+    override fun createUser(data: CreateUserRequest): Result<UserEntity, UserErrorCode> {
+        val entity = data.toNewUserEntity()
+
         return try {
-            Ok(userRepository.createUser(data))
+            Ok(userRepository.create(entity))
         } catch (ex: DuplicateKeyException) {
             Err(UserErrorCode.DUPLICATE_ACCOUNT)
         }

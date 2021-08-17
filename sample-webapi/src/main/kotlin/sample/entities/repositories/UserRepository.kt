@@ -4,7 +4,7 @@ import sample.entities.models.NewUserEntity
 import sample.entities.models.UserEntity
 
 interface UserRepository {
-    fun getUser(userId: UserEntity.UserId): UserEntity
+    fun get(userId: UserEntity.UserId): UserEntity
 
-    fun createUser(data: NewUserEntity): UserEntity
+    fun create(data: NewUserEntity): UserEntity
 }

@@ -1,4 +1,4 @@
-package sample.useCases.errorCodes
+package sample.useCases.models
 
 enum class UserErrorCode {
     NOT_FOUND,

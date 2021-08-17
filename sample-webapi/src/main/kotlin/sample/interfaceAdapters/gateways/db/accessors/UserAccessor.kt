@@ -17,5 +17,6 @@ class UserAccessor {
     fun insert(data: NewUserEntity): InsertStatement<Number> =
         Users.insert {
             it[account] = data.account
+            it[name] = data.name
         }
 }

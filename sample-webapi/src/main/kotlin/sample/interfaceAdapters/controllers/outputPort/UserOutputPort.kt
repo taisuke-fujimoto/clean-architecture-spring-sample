@@ -6,13 +6,14 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import sample.entities.models.UserEntity
 import sample.interfaceAdapters.controllers.models.UserRes
-import sample.useCases.errorCodes.UserErrorCode
+import sample.useCases.models.UserErrorCode
 
 interface UserOutputPort {
     fun UserEntity.toUserRes(): UserRes =
         UserRes(
             userId = userId.value,
-            account = account
+            account = account,
+            name = name
         )
 
     fun Result<UserEntity, UserErrorCode>.toResponseEntity(): ResponseEntity<*> =
