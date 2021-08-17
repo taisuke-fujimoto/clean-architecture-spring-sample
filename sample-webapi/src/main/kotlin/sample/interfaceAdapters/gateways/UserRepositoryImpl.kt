@@ -6,7 +6,6 @@ import org.jetbrains.exposed.exceptions.ExposedSQLException
 import org.springframework.stereotype.Repository
 import sample.entities.exceptions.DataNotFoundException
 import sample.entities.exceptions.DuplicateKeyException
-import sample.entities.models.NewUserEntity
 import sample.entities.models.UserEntity
 import sample.entities.repositories.UserRepository
 import sample.interfaceAdapters.gateways.db.accessors.UserAccessor
@@ -27,9 +26,12 @@ class UserRepositoryImpl(
         )
     }
 
-    override fun create(data: NewUserEntity): UserEntity {
+    override fun exists(userId: UserEntity.UserId): Boolean =
+        userAccessor.findBy(userId) != null // 疑似 EXISTS
+
+    override fun create(entity: UserEntity.Create): UserEntity.UserId {
         val result = try {
-            userAccessor.insert(data)
+            userAccessor.insert(entity)
         } catch (ex: ExposedSQLException) {
             logger.error("[createUser] sqlState: ${ex.sqlState}")
             if (ex.sqlState == "23505") {
@@ -38,9 +40,12 @@ class UserRepositoryImpl(
                 throw ex
             }
         }
-        check(result.insertedCount == 1) { "INSERT 件数がおかしい (${result.insertedCount} 件)" }
-        val newId = UserEntity.UserId(result[Users.id])
+        check(result.insertedCount == 1) { "unexpected inserted count (${result.insertedCount})" }
+        return UserEntity.UserId(result[Users.id])
+    }
 
-        return get(newId)
+    override fun update(entity: UserEntity.Update) {
+        val result = userAccessor.update(entity)
+        check(result == 1) { "unexpected updated count ($result)" }
     }
 }

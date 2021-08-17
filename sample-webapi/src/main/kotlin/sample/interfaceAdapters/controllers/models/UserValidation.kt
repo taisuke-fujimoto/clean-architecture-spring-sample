@@ -12,4 +12,6 @@ interface UserValidation {
         @get:Length(min = 1, max = 10)
         val account: String
     }
+
+    interface Update : Common
 }

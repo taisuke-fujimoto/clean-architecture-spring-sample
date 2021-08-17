@@ -11,6 +11,7 @@ import sample.entities.models.UserEntity
 import sample.entities.repositories.UserRepository
 import sample.useCases.inputPort.UserUseCase
 import sample.useCases.models.CreateUserRequest
+import sample.useCases.models.UpdateUserRequest
 import sample.useCases.models.UserErrorCode
 
 @Transactional
@@ -27,12 +28,24 @@ class UserInteractor(
     }
 
     override fun createUser(data: CreateUserRequest): Result<UserEntity, UserErrorCode> {
-        val entity = data.toNewUserEntity()
+        val entity = data.toEntity()
 
         return try {
-            Ok(userRepository.create(entity))
+            val userId = userRepository.create(entity)
+            Ok(userRepository.get(userId))
         } catch (ex: DuplicateKeyException) {
             Err(UserErrorCode.DUPLICATE_ACCOUNT)
+        }
+    }
+
+    override fun updateUser(userId: Long, data: UpdateUserRequest): Result<UserEntity, UserErrorCode> {
+        val entity = data.toEntity(UserEntity.UserId(userId))
+
+        return if (userRepository.exists(entity.userId)) {
+            userRepository.update(entity)
+            Ok((userRepository.get(entity.userId)))
+        } else {
+            Err(UserErrorCode.NOT_FOUND)
         }
     }
 }

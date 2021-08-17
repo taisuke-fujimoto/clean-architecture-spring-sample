@@ -11,4 +11,5 @@ logging:
   level:
     org.springframework.boot.web: DEBUG
     org.springframework.web: DEBUG
+    Exposed: DEBUG
     sample: DEBUG

@@ -1,10 +1,13 @@
 package sample.entities.repositories
 
-import sample.entities.models.NewUserEntity
 import sample.entities.models.UserEntity
 
 interface UserRepository {
     fun get(userId: UserEntity.UserId): UserEntity
 
-    fun create(data: NewUserEntity): UserEntity
+    fun exists(userId: UserEntity.UserId): Boolean
+
+    fun create(entity: UserEntity.Create): UserEntity.UserId
+
+    fun update(entity: UserEntity.Update)
 }
