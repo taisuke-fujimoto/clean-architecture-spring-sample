@@ -9,8 +9,8 @@ import sample.entities.models.NewUserEntity
 import sample.entities.models.UserEntity
 import sample.entities.repositories.UserRepository
 import sample.useCases.errorCodes.UserErrorCode
-import sample.useCases.exceptions.DataNotFoundException
-import sample.useCases.exceptions.DuplicateKeyException
+import sample.entities.exceptions.DataNotFoundException
+import sample.entities.exceptions.DuplicateKeyException
 import sample.useCases.inputPort.UserUseCase
 
 @Transactional

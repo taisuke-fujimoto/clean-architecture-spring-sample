@@ -1,3 +1,3 @@
-package sample.useCases.exceptions
+package sample.entities.exceptions
 
 class DuplicateKeyException(override val cause: Throwable?) : BusinessException()
