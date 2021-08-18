@@ -7,7 +7,11 @@ data class UserEntity(
 ) {
     data class UserId(
         val value: Long
-    )
+    ) {
+        init {
+            require(value > 0) { "UserId must be positive. (value: $value)" }
+        }
+    }
 
     data class Create(
         val account: String,
