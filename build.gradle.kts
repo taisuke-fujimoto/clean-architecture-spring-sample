@@ -2,11 +2,11 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
 plugins {
-    kotlin("jvm") version "1.5.21"
-    kotlin("plugin.spring") version "1.5.21"
-    id("org.springframework.boot") version "2.5.3"
-    id("io.spring.dependency-management") version "1.0.11.RELEASE"
-    id("org.jlleitschuh.gradle.ktlint") version "10.1.0"
+    kotlin("jvm") version KOTLIN_VERSION
+    kotlin("plugin.spring") version KOTLIN_VERSION
+    id("org.springframework.boot") version SPRING_BOOT_VERSION
+    id("io.spring.dependency-management") version SPRING_DEPENDENCY_MANAGEMENT_VERSION
+    id("org.jlleitschuh.gradle.ktlint") version GRADLE_KTLINT_VERSION
 }
 
 tasks.wrapper {
