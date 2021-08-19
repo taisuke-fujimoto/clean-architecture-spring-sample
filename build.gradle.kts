@@ -4,13 +4,13 @@ import org.springframework.boot.gradle.plugin.SpringBootPlugin
 plugins {
     kotlin("jvm") version KOTLIN_VERSION
     kotlin("plugin.spring") version KOTLIN_VERSION
+    id("org.jlleitschuh.gradle.ktlint") version GRADLE_KTLINT_VERSION
     id("org.springframework.boot") version SPRING_BOOT_VERSION
     id("io.spring.dependency-management") version SPRING_DEPENDENCY_MANAGEMENT_VERSION
-    id("org.jlleitschuh.gradle.ktlint") version GRADLE_KTLINT_VERSION
 }
 
 tasks.wrapper {
-    gradleVersion = "7.1.1"
+    gradleVersion = "7.2"
 }
 
 allprojects {
@@ -43,7 +43,7 @@ subprojects {
         implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
     }
 
-    tasks.withType<KotlinCompile> {
+    tasks.withType<KotlinCompile>().configureEach {
         kotlinOptions {
             jvmTarget = "1.8"
             javaParameters = true
