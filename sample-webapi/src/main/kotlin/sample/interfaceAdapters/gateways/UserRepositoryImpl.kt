@@ -17,7 +17,7 @@ class UserRepositoryImpl(
 ) : UserRepository {
     private val logger: Log = LogFactory.getLog(javaClass)
 
-    override fun get(userId: UserEntity.UserId): UserEntity {
+    override fun getOne(userId: UserEntity.UserId): UserEntity {
         val data = userAccessor.findBy(userId) ?: throw DataNotFoundException()
         return UserEntity(
             userId = UserEntity.UserId(data[Users.id]),

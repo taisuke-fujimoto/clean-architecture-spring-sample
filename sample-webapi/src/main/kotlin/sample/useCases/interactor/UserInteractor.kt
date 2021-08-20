@@ -21,7 +21,7 @@ class UserInteractor(
 ) : UserUseCase {
     override fun getUser(userId: Long): Result<UserEntity, UserErrorCode> {
         return try {
-            Ok(userRepository.get(UserEntity.UserId(userId)))
+            Ok(userRepository.getOne(UserEntity.UserId(userId)))
         } catch (ex: DataNotFoundException) {
             Err(UserErrorCode.NOT_FOUND)
         }
@@ -32,7 +32,7 @@ class UserInteractor(
 
         return try {
             val userId = userRepository.create(entity)
-            Ok(userRepository.get(userId))
+            Ok(userRepository.getOne(userId))
         } catch (ex: DuplicateKeyException) {
             Err(UserErrorCode.DUPLICATE_ACCOUNT)
         }
@@ -43,7 +43,7 @@ class UserInteractor(
 
         return if (userRepository.exists(entity.userId)) {
             userRepository.update(entity)
-            Ok((userRepository.get(entity.userId)))
+            Ok((userRepository.getOne(entity.userId)))
         } else {
             Err(UserErrorCode.NOT_FOUND)
         }

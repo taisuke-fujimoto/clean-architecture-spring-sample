@@ -3,7 +3,7 @@ package sample.entities.repositories
 import sample.entities.models.UserEntity
 
 interface UserRepository {
-    fun get(userId: UserEntity.UserId): UserEntity
+    fun getOne(userId: UserEntity.UserId): UserEntity
 
     fun exists(userId: UserEntity.UserId): Boolean
 
