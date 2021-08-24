@@ -1,4 +1,4 @@
-package sample.interfaceAdapters.gateways
+package sample.interfaceAdapters.gateways.repositories
 
 import org.apache.commons.logging.Log
 import org.apache.commons.logging.LogFactory
@@ -33,7 +33,7 @@ class UserRepositoryImpl(
         val result = try {
             userAccessor.insert(entity)
         } catch (ex: ExposedSQLException) {
-            logger.error("[createUser] sqlState: ${ex.sqlState}")
+            logger.error("[create] sqlState: ${ex.sqlState}")
             if (ex.sqlState == "23505") {
                 throw DuplicateKeyException(ex.cause)
             } else {
